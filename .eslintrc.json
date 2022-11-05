@@ -1,6 +1,11 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "tsconfigRootDir": "/home/robotix703/coding/git/maat/maat_app",
+    "sourceType": "module"
+  },
   "overrides": [
     {
       "files": ["*.ts"],
