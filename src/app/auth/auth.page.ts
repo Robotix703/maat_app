@@ -22,7 +22,7 @@ export class AuthPage implements OnInit {
     private loadingCtrl: LoadingController
   ) {}
 
-  authenticate(name: string, password: string) {
+  authenticate(name: string, password: string, invitationCode: undefined | string, userNumber: undefined | number) {
     this.isLoading = true;
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
@@ -32,7 +32,9 @@ export class AuthPage implements OnInit {
         if (this.isLogin) {
           authObs = this.authService.login(name, password);
         } else {
-          authObs = this.authService.signup(name, password, '', 0);
+          if(invitationCode && userNumber){
+            authObs = this.authService.signup(name, password, invitationCode, userNumber);
+          }
         }
         authObs.subscribe(
           resData => {
@@ -68,10 +70,12 @@ export class AuthPage implements OnInit {
     if (!form.valid) {
       return;
     }
-    const name = form.value.name;
-    const password = form.value.password;
+    const name: string = form.value.name;
+    const password: string = form.value.password;
+    const invitationCode: undefined | string = form.value.invitationCode;
+    const userNumber: undefined | string = form.value.userNumber;
 
-    this.authenticate(name, password);
+    this.authenticate(name, password, invitationCode, parseInt(userNumber, 10));
     form.reset();
   }
 

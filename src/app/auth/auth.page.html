@@ -47,6 +47,43 @@
                 Should at least be 6 characters long.
               </ion-label>
             </ion-item>
+            <div *ngIf="!isLogin">
+              <ion-item >
+                <ion-label position="floating">Invitation Code</ion-label>
+                <ion-input
+                  type="text"
+                  ngModel
+                  name="invitationCode"
+                  minlength="6"
+                  #invitationCodeCtrl="ngModel"
+                ></ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="!invitationCodeCtrl.valid && invitationCodeCtrl.touched"
+                lines="none"
+              >
+                <ion-label>
+                  Should at least be 6 characters long.
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">User Number</ion-label>
+                <ion-input
+                  type="text"
+                  ngModel
+                  name="userNumber"
+                  #userNumberCtrl="ngModel"
+                ></ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="!userNumberCtrl.valid && userNumberCtrl.touched"
+                lines="none"
+              >
+                <ion-label>
+                  Should at least be 6 characters long.
+                </ion-label>
+              </ion-item>
+            </div>
           </ion-list>
         </ion-col>
       </ion-row>
