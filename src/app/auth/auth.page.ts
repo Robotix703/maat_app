@@ -22,6 +22,8 @@ export class AuthPage implements OnInit {
     private loadingCtrl: LoadingController
   ) {}
 
+  ngOnInit() {}
+
   authenticate(name: string, password: string, invitationCode: undefined | string, userNumber: undefined | number) {
     this.isLoading = true;
     this.loadingCtrl
@@ -59,8 +61,6 @@ export class AuthPage implements OnInit {
         );
       });
   }
-
-  ngOnInit() {}
 
   onSwitchAuthMode() {
     this.isLogin = !this.isLogin;
