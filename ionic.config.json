@@ -1,0 +1,7 @@
+{
+  "name": "maat_app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
