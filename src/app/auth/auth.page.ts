@@ -1,7 +1,10 @@
 /* eslint-disable object-shorthand */
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,8 +16,47 @@ export class AuthPage implements OnInit {
   isLogin = true;
 
   constructor(
-    private alertCtrl: AlertController
+    private authService: AuthService,
+    private router: Router,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
   ) {}
+
+  authenticate(name: string, password: string) {
+    this.isLoading = true;
+    this.loadingCtrl
+      .create({ keyboardClose: true, message: 'Logging in...' })
+      .then(loadingEl => {
+        loadingEl.present();
+        let authObs: Observable<AuthResponseData>;
+        if (this.isLogin) {
+          authObs = this.authService.login(name, password);
+        } else {
+          authObs = this.authService.signup(name, password, '', 0);
+        }
+        authObs.subscribe(
+          resData => {
+            console.log(resData);
+            this.isLoading = false;
+            loadingEl.dismiss();
+            this.router.navigateByUrl('/main');
+          },
+          errRes => {
+            loadingEl.dismiss();
+            const code = errRes.error.error.message;
+            let message = 'Could not sign you up, please try again.';
+            if (code === 'EMAIL_EXISTS') {
+              message = 'This email address exists already!';
+            } else if (code === 'EMAIL_NOT_FOUND') {
+              message = 'E-Mail address could not be found.';
+            } else if (code === 'INVALID_PASSWORD') {
+              message = 'This password is not correct.';
+            }
+            this.showAlert(message);
+          }
+        );
+      });
+  }
 
   ngOnInit() {}
 
@@ -26,10 +68,10 @@ export class AuthPage implements OnInit {
     if (!form.valid) {
       return;
     }
-    const email = form.value.email;
+    const name = form.value.name;
     const password = form.value.password;
 
-    //this.authenticate(email, password);
+    this.authenticate(name, password);
     form.reset();
   }
 
