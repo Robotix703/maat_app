@@ -6,3 +6,13 @@ export interface List {
   balance2: number;
   merged: boolean;
 }
+
+export interface FetchList {
+  lists: List[];
+  count: number;
+}
+
+export interface DeleteResponse {
+  acknowledged: boolean;
+  deletedCount: number;
+}
