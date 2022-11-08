@@ -27,6 +27,7 @@ const URL_BACKEND = environment.apiURL + 'user';
 export class AuthService implements OnDestroy {
   private _user = new BehaviorSubject<User>(null);
   private activeLogoutTimer: any;
+  private validToken: string;
 
   get userIsAuthenticated(): Observable<boolean> {
     return this._user.asObservable().pipe(
@@ -62,6 +63,10 @@ export class AuthService implements OnDestroy {
         }
       })
     );
+  }
+
+  getValidToken(){
+    return this.validToken;
   }
 
   constructor(private http: HttpClient) {}
@@ -120,6 +125,7 @@ export class AuthService implements OnDestroy {
           parsedData.token,
           expirationTime
         );
+        this.validToken = parsedData.token;
         return user;
       }),
       tap(user => {
@@ -161,6 +167,7 @@ export class AuthService implements OnDestroy {
       expirationTime.toISOString(),
       userData.name
     );
+    this.validToken = userData.token;
   }
 
   private storeAuthData(
