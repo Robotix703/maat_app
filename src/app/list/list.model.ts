@@ -16,3 +16,13 @@ export interface DeleteResponse {
   acknowledged: boolean;
   deletedCount: number;
 }
+
+export interface FormCreateList {
+  listName: string;
+  isMain: boolean;
+}
+
+export interface CreateResponse {
+  id: string;
+  list: List;
+}
