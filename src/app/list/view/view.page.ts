@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { FetchedPurchases, Purchase } from '../../purchase/purchase.model';
 import { PurchaseService } from '../../purchase/purchase.service';
@@ -10,11 +11,13 @@ import { PurchaseService } from '../../purchase/purchase.service';
   templateUrl: './view.page.html',
   styleUrls: ['./view.page.scss'],
 })
-export class ViewPage implements OnInit {
+export class ViewPage implements OnInit, OnDestroy {
 
   isLoading = false;
   listName = '';
   loadedPurchases: Purchase[];
+  purchaseSub: Subscription;
+  listId = '';
 
   constructor(
     private navCtrl: NavController,
@@ -34,16 +37,32 @@ export class ViewPage implements OnInit {
         return;
       }
 
-      const listId: string = paramMap.get('listId');
+      this.listId = paramMap.get('listId');
       this.isLoading = true;
 
-      this.purchaseService.getPurchases(listId).subscribe(data => {
+      this.purchaseSub = this.purchaseService.getPurchases(this.listId).subscribe(data => {
         this.display(data);
       });
     });
   }
 
-  deletePurchase(purchaseId: string, slidingEl: IonItemSliding){
+  ngOnDestroy(): void {
+    this.purchaseSub.unsubscribe();
+  }
 
+  deletePurchase(purchaseId: string, slidingEl: IonItemSliding){
+    this.purchaseService.deletePurchase(purchaseId).subscribe(response => {
+      this.purchaseSub = this.purchaseService.getPurchases(purchaseId).subscribe(data => {
+        this.display(data);
+      });
+      slidingEl.close();
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.purchaseSub = this.purchaseService.getPurchases(this.listId).subscribe(data => {
+      this.display(data);
+    });
   }
 }
