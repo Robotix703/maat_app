@@ -7,7 +7,7 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let list of loadedLists" #slidingList>
-      <ion-item>
+      <ion-item [routerLink]="['/list/view', list._id]">
         <ion-label>{{ list.name }}</ion-label>
       </ion-item>
 

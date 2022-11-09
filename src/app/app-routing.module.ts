@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'list/create',
     loadChildren: () => import('./list/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'list/view/:listId',
+    loadChildren: () => import('./list/view/view.module').then( m => m.ViewPageModule)
   }
 ];
 
