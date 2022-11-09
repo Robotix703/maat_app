@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { List } from '../list/list.model';
+import { FetchList, List } from '../list/list.model';
 import { ListService } from '../list/list.service';
 
 @Component({
@@ -14,12 +14,17 @@ export class MainPage implements OnInit, OnDestroy {
 
   loadedLists: List[];
   listsSub: Subscription;
+  isLoading: boolean;
 
   constructor(private listService: ListService) { }
 
+  display(data: FetchList) {
+    this.loadedLists = data.lists;
+  }
+
   ngOnInit() {
     this.listsSub = this.listService.getLists().subscribe(lists => {
-      this.loadedLists = lists.lists;
+      this.display(lists);
     });
   }
 
@@ -27,9 +32,18 @@ export class MainPage implements OnInit, OnDestroy {
     this.listsSub.unsubscribe();
   }
 
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.listsSub = this.listService.getLists().subscribe(lists => {
+      this.display(lists);
+    });
+  }
+
   deleteList(listId: string, slidingEl: IonItemSliding) {
     this.listService.deleteList(listId).subscribe(response => {
-      console.log(response);
+      this.listsSub = this.listService.getLists().subscribe(lists => {
+        this.display(lists);
+      });
       slidingEl.close();
     });
   }
