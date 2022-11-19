@@ -5,14 +5,24 @@ export interface Purchase {
   title: string;
   amount: number;
   date: Date;
-  To: string[];
+  buyTo: string[];
   from: string;
   listId: string;
-  balance1: string;
-  balance2: string;
+  total0: number;
+  total1: number;
+  balance0: number;
+  balance1: number;
 }
 
 export interface FetchedPurchases {
   listName: string;
   purchases: Purchase[];
+}
+
+export interface FormPurchase {
+  title: string;
+  amount: number;
+  buyTo: string[];
+  from: string;
+  listId: string;
 }

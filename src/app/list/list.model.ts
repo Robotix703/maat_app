@@ -2,8 +2,10 @@ export interface List {
   _id: string;
   name: string;
   main: boolean;
+  total0: number;
+  total1: number;
+  balance0: number;
   balance1: number;
-  balance2: number;
   merged: boolean;
 }
 

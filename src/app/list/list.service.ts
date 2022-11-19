@@ -26,8 +26,10 @@ export class ListService {
     return this.http.post<CreateResponse>(URL_BACKEND + '/', {
       name: data.listName,
       main: data.isMain,
+      total0: 0,
+      total1: 0,
+      balance0: 0,
       balance1: 0,
-      balance2: 0,
       merged: false
     });
   }
