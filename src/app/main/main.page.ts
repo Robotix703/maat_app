@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { UserService } from '../auth/user.service';
 
 import { FetchList, List } from '../list/list.model';
 import { ListService } from '../list/list.service';
@@ -16,7 +17,7 @@ export class MainPage implements OnInit, OnDestroy {
   listsSub: Subscription;
   isLoading: boolean;
 
-  constructor(private listService: ListService) { }
+  constructor(private listService: ListService, private userService: UserService) { }
 
   display(data: FetchList) {
     this.loadedLists = data.lists;
@@ -26,6 +27,8 @@ export class MainPage implements OnInit, OnDestroy {
     this.listsSub = this.listService.getLists().subscribe(lists => {
       this.display(lists);
     });
+
+    this.userService.getPrettyUsers();
   }
 
   ngOnDestroy(): void {

@@ -26,3 +26,7 @@ export interface FormPurchase {
   from: string;
   listId: string;
 }
+
+export interface CreateResponse {
+  status: string;
+}

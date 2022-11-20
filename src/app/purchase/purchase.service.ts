@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DeleteResponse } from '../list/list.model';
-import { FetchedPurchases } from './purchase.model';
+import { CreateResponse, FetchedPurchases, FormPurchase } from './purchase.model';
 
 const URL_BACKEND = environment.apiURL + 'purchase';
 
@@ -20,5 +20,9 @@ export class PurchaseService {
 
   deletePurchase(purchaseId: string): Observable<DeleteResponse>{
     return this.http.delete<DeleteResponse>(URL_BACKEND + '/' + purchaseId);
+  }
+
+  createPurchase(data: FormPurchase): Observable<CreateResponse> {
+    return this.http.post<CreateResponse>(URL_BACKEND + '/add', data);
   }
 }

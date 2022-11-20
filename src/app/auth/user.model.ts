@@ -1,3 +1,4 @@
+/* eslint-disable id-blacklist */
 /* eslint-disable no-underscore-dangle */
 export class User {
   constructor(
@@ -20,4 +21,10 @@ export class User {
     }
     return this.tokenExpirationDate.getTime() - new Date().getTime();
   }
+}
+
+export interface PrettyUser {
+  name: string;
+  id: string;
+  number: number;
 }

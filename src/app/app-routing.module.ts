@@ -24,6 +24,10 @@ const routes: Routes = [
   {
     path: 'list/view/:listId',
     loadChildren: () => import('./list/view/view.module').then( m => m.ViewPageModule)
+  },
+  {
+    path: 'purchase/create/:listId',
+    loadChildren: () => import('./purchase/create/create.module').then( m => m.CreatePageModule)
   }
 ];
 
