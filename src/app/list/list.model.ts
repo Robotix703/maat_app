@@ -9,6 +9,15 @@ export interface List {
   merged: boolean;
 }
 
+export interface DisplayableList {
+  _id: string;
+  name: string;
+  main: boolean;
+  total: number;
+  balance: number;
+  merged: boolean;
+}
+
 export interface FetchList {
   lists: List[];
   count: number;

@@ -8,7 +8,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let list of loadedLists" #slidingList>
       <ion-item [routerLink]="['/list/view', list._id]">
-        <ion-label>{{ list.name }}</ion-label>
+        <ion-label>{{ list.name }}</ion-label><ion-label  [ngStyle]="{'color': (list.balance >0) ? 'green' : 'red' }">{{ list.balance }}</ion-label>
       </ion-item>
 
       <ion-item-options side="end">

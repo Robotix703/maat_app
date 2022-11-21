@@ -1,3 +1,4 @@
+/* eslint-disable id-blacklist */
 /* eslint-disable arrow-body-style */
 /* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -15,7 +16,7 @@ export interface AuthResponseData {
   token: string;
   userId: string;
   expiresIn: string;
-  userNumber: number;
+  number: number;
   name: string;
 }
 
@@ -46,6 +47,18 @@ export class AuthService implements OnDestroy {
       map(user => {
         if (user) {
           return user.id;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  get userNumber() {
+    return this._user.asObservable().pipe(
+      map(user => {
+        if (user) {
+          return user.number;
         } else {
           return null;
         }
@@ -114,6 +127,7 @@ export class AuthService implements OnDestroy {
           tokenExpirationDate: string;
           userId: string;
           name: string;
+          number: number;
         };
         const expirationTime = new Date(parsedData.tokenExpirationDate);
         if (expirationTime <= new Date()) {
@@ -122,6 +136,7 @@ export class AuthService implements OnDestroy {
         const user = new User(
           parsedData.userId,
           parsedData.name,
+          parsedData.number,
           parsedData.token,
           expirationTime
         );
@@ -156,6 +171,7 @@ export class AuthService implements OnDestroy {
     const user = new User(
       userData.userId,
       userData.name,
+      userData.number,
       userData.token,
       expirationTime
     );
@@ -165,7 +181,8 @@ export class AuthService implements OnDestroy {
       userData.userId,
       userData.token,
       expirationTime.toISOString(),
-      userData.name
+      userData.name,
+      userData.number
     );
     this.validToken = userData.token;
   }
@@ -174,13 +191,15 @@ export class AuthService implements OnDestroy {
     userId: string,
     token: string,
     tokenExpirationDate: string,
-    name: string
+    name: string,
+    number: number
   ) {
     const data = JSON.stringify({
       userId: userId,
       token: token,
       tokenExpirationDate: tokenExpirationDate,
-      name: name
+      name: name,
+      number: number
     });
     Preferences.set({ key: 'authData', value: data });
   }

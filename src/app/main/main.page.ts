@@ -1,9 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { UserService } from '../auth/user.service';
+import { AuthService } from '../auth/auth.service';
 
-import { FetchList, List } from '../list/list.model';
+import { DisplayableList, FetchList } from '../list/list.model';
 import { ListService } from '../list/list.service';
 
 @Component({
@@ -13,22 +14,36 @@ import { ListService } from '../list/list.service';
 })
 export class MainPage implements OnInit, OnDestroy {
 
-  loadedLists: List[];
+  loadedLists: DisplayableList[];
   listsSub: Subscription;
   isLoading: boolean;
+  userNumber: number;
 
-  constructor(private listService: ListService, private userService: UserService) { }
+  constructor(private listService: ListService, private authService: AuthService) { }
 
   display(data: FetchList) {
-    this.loadedLists = data.lists;
+    this.loadedLists = [];
+    for(const list of data.lists){
+      const temp: DisplayableList = {
+        _id: list._id,
+        name: list.name,
+        main: list.main,
+        total: (this.userNumber === 0) ? list.total0 : list.total1,
+        balance: (this.userNumber === 0) ? list.balance0 : list.balance1,
+        merged: list.merged
+      };
+      this.loadedLists.push(temp);
+    }
   }
 
   ngOnInit() {
-    this.listsSub = this.listService.getLists().subscribe(lists => {
-      this.display(lists);
-    });
+    this.authService.userNumber.subscribe(userNumber => {
+      this.userNumber = userNumber;
 
-    this.userService.getPrettyUsers();
+      this.listsSub = this.listService.getLists().subscribe(lists => {
+        this.display(lists);
+      });
+    });
   }
 
   ngOnDestroy(): void {
