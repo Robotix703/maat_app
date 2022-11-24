@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
+import { PrettyUser } from '../auth/user.model';
+import { List } from '../list/list.model';
+
 export interface Purchase {
   _id: string;
   title: string;
@@ -14,9 +17,20 @@ export interface Purchase {
   balance1: number;
 }
 
-export interface FetchedPurchases {
-  listName: string;
-  purchases: Purchase[];
+export interface PrettyPurchase {
+  _id: string;
+  title: string;
+  list: List;
+  amount: number;
+  date: Date;
+  buyTo: string[];
+  from: string;
+  user0: PrettyUser;
+  user1: PrettyUser;
+  total0: number;
+  total1: number;
+  balance0: number;
+  balance1: number;
 }
 
 export interface FormPurchase {

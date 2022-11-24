@@ -3,8 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { IonItemSliding, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { FetchedPurchases, Purchase } from '../../purchase/purchase.model';
+import { PrettyPurchase } from '../../purchase/purchase.model';
 import { PurchaseService } from '../../purchase/purchase.service';
+import { PrettyList } from '../list.model';
+import { ListService } from '../list.service';
 
 @Component({
   selector: 'app-view',
@@ -15,19 +17,20 @@ export class ViewPage implements OnInit, OnDestroy {
 
   isLoading = false;
   listName = '';
-  loadedPurchases: Purchase[];
+  loadedPurchases: PrettyPurchase[];
   purchaseSub: Subscription;
   listId = '';
+  prettyList: PrettyList;
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private purchaseService: PurchaseService
+    private purchaseService: PurchaseService,
+    private listService: ListService
     ) { }
 
-  display(data: FetchedPurchases){
-    this.listName = data.listName;
-    this.loadedPurchases = data.purchases;
+  display(data: PrettyPurchase[]){
+    this.loadedPurchases = data;
   }
 
   ngOnInit() {
@@ -42,6 +45,11 @@ export class ViewPage implements OnInit, OnDestroy {
 
       this.purchaseSub = this.purchaseService.getPurchases(this.listId).subscribe(data => {
         this.display(data);
+      });
+
+      this.listService.getListById(this.listId).subscribe(list => {
+        this.listName = list.name;
+        this.prettyList = list;
       });
     });
   }

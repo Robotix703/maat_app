@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { CreateResponse, DeleteResponse, FetchList, FormCreateList } from './list.model';
+import { CreateResponse, DeleteResponse, FetchList, FormCreateList, PrettyList } from './list.model';
 
 const URL_BACKEND = environment.apiURL + 'list';
 
@@ -16,6 +16,10 @@ export class ListService {
 
   getLists(): Observable<FetchList>{
     return this.http.get<FetchList>(URL_BACKEND + '/', {});
+  }
+
+  getListById(listId: string): Observable<PrettyList>{
+    return this.http.get<PrettyList>(URL_BACKEND + '/byId?listId=' + listId, {});
   }
 
   deleteList(listId: string): Observable<DeleteResponse>{
