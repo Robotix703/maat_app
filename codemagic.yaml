@@ -12,7 +12,9 @@ workflows:
       - name: Install npm dependencies for Ionic project
         script: |
           npm install
-          ionic capacitor update
+          ionic build
+          npx cap add android
+          npx cap sync
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
