@@ -14,6 +14,7 @@ workflows:
           npm install
           ionic build
           npx cap add android
+          npx capacitor-assets generate --iconBackgroundColor '#000000' --splashBackgroundColor '#000000'
           npx cap sync
       - name: Set Android SDK location
         script: |
