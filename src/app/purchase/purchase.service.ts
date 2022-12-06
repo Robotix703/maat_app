@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DeleteResponse } from '../list/list.model';
-import { CreateResponse, FormPurchase, PrettyPurchase } from './purchase.model';
+import { CreateResponse, FormPurchase, PrettyPurchase, UpdateResponse } from './purchase.model';
 
 const URL_BACKEND = environment.apiURL + 'purchase';
 
@@ -24,5 +24,13 @@ export class PurchaseService {
 
   createPurchase(data: FormPurchase): Observable<CreateResponse> {
     return this.http.post<CreateResponse>(URL_BACKEND + '/add', data);
+  }
+
+  getPurchase(purchaseId: string): Observable<PrettyPurchase>{
+    return this.http.get<PrettyPurchase>(URL_BACKEND + '/byPurchaseId?purchaseId=' + purchaseId, {});
+  }
+
+  updatePurchase(data: FormPurchase, purchaseId: string): Observable<UpdateResponse>{
+    return this.http.put<UpdateResponse>(URL_BACKEND + '/pretty/' + purchaseId, {data});
   }
 }

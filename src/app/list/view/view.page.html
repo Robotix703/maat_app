@@ -22,7 +22,7 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let purchase of loadedPurchases" #slidingPurchase>
-      <ion-item>
+      <ion-item [routerLink]="['/purchase/view', purchase._id]">
         <ion-label>{{ purchase.title }}</ion-label><ion-label>{{ purchase.amount }}€ par {{ purchase.from }}</ion-label>
       </ion-item>
 

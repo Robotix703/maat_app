@@ -36,7 +36,7 @@ export class ViewPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('listId')) {
-        this.navCtrl.navigateBack('/places/tabs/discover');
+        this.navCtrl.navigateBack('/main');
         return;
       }
 

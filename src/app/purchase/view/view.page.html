@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        [defaultHref]="'/main'"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!isLoading">{{ purchase.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" *ngIf="!isLoading">
+    <ion-grid>
+      <!--Title-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Titre</ion-label>
+            <ion-input
+              type="text"
+              autocomplete
+              autocorrect
+              formControlName="title"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <!--Amount-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Montant</ion-label>
+            <ion-input
+              type="number"
+              autocomplete
+              autocorrect
+              formControlName="amount"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <!--From-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-label>Par</ion-label>
+          <ion-list>
+            <ion-item>
+              <ion-select placeholder="Par" style="width: 100%;" [compareWith]="compareFn"
+              name="from"
+              formControlName="from"
+              required
+              ><ion-select-option *ngFor="let user of users" value={{user.name}}>{{user.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <!--BuyTo-->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-label>Pour</ion-label>
+          <ion-list>
+            <ion-item>
+              <ion-select placeholder="Pour" style="width: 100%;" [multiple]="true" [compareWith]="compareBuyToFn"
+              name="buyTo"
+              formControlName="buyTo"
+              required
+              ><ion-select-option *ngFor="let user of users" value={{user.name}}>{{user.name}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

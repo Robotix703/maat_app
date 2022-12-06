@@ -28,6 +28,10 @@ const routes: Routes = [
   {
     path: 'purchase/create/:listId',
     loadChildren: () => import('./purchase/create/create.module').then( m => m.CreatePageModule)
+  },
+  {
+    path: 'purchase/view/:purchaseId',
+    loadChildren: () => import('./purchase/view/view.module').then( m => m.ViewPageModule)
   }
 ];
 

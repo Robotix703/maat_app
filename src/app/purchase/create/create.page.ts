@@ -6,7 +6,7 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PrettyUser } from 'src/app/auth/user.model';
 import { UserService } from 'src/app/auth/user.service';
-import { FormPurchase } from '../purchase.model';
+import { FormPurchase, UserId } from '../purchase.model';
 import { PurchaseService } from '../purchase.service';
 
 @Component({
@@ -55,8 +55,8 @@ export class CreatePage implements OnInit {
     const purchaseData: FormPurchase = {
       title: this.form.value.title,
       amount: this.form.value.amount,
-      buyTo: this.form.value.buyTo,
-      from: this.userId,
+      buyTo: this.form.value.buyTo as UserId[],
+      from: this.userId as UserId,
       listId: this.listId
     };
 
@@ -65,7 +65,5 @@ export class CreatePage implements OnInit {
         this.router.navigateByUrl('/list/view/' + this.listId);
       }
     });
-
-    console.log(purchaseData);
   }
 }

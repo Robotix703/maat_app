@@ -33,14 +33,20 @@ export interface PrettyPurchase {
   balance1: number;
 }
 
+export type UserId = string;
+
 export interface FormPurchase {
   title: string;
   amount: number;
-  buyTo: string[];
-  from: string;
+  buyTo: UserId[];
+  from: UserId;
   listId: string;
 }
 
 export interface CreateResponse {
+  status: string;
+}
+
+export interface UpdateResponse {
   status: string;
 }
