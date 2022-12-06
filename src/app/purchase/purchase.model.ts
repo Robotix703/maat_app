@@ -43,6 +43,13 @@ export interface FormPurchase {
   listId: string;
 }
 
+export interface UpdateFormPurchase {
+  title: string;
+  amount: number;
+  buyTo: UserId[];
+  from: UserId;
+}
+
 export interface CreateResponse {
   status: string;
 }

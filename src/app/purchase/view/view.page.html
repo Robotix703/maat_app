@@ -6,6 +6,11 @@
       ></ion-back-button>
     </ion-buttons>
     <ion-title *ngIf="!isLoading">{{ purchase.title }}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="updatePurchase()" [disabled]="!form?.valid">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

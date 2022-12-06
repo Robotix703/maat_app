@@ -35,7 +35,7 @@ export class CreatePage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('listId')) {
-        this.navCtrl.navigateBack('/places/tabs/discover');
+        this.navCtrl.navigateBack('/main');
         return;
       }
       this.listId = paramMap.get('listId');

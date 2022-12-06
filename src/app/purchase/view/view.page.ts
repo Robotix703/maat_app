@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { PrettyUser } from 'src/app/auth/user.model';
-import { UserService } from 'src/app/auth/user.service';
-import { PrettyPurchase } from '../purchase.model';
+import { PrettyPurchase, UpdateFormPurchase } from '../purchase.model';
 import { PurchaseService } from '../purchase.service';
 
 @Component({
@@ -25,8 +24,7 @@ export class ViewPage implements OnInit {
   constructor(
     private purchaseService: PurchaseService,
     private navCtrl: NavController,
-    private route: ActivatedRoute,
-    private userService: UserService)
+    private route: ActivatedRoute)
   { }
 
   ngOnInit() {
@@ -50,8 +48,6 @@ export class ViewPage implements OnInit {
     this.purchase = data;
     this.users = [this.purchase.user0, this.purchase.user1];
 
-    console.log(this.purchase);
-
     this.form = new FormGroup({
       title: new FormControl(this.purchase.title, {
         updateOn: 'blur',
@@ -73,7 +69,22 @@ export class ViewPage implements OnInit {
   }
 
   updatePurchase(){
+    if (!this.form.valid) {
+      return;
+    }
 
+    const data: UpdateFormPurchase = {
+      title: this.form.value.title,
+      amount: this.form.value.amount,
+      buyTo: this.form.value.buyTo,
+      from: this.form.value.from
+    };
+
+    this.purchaseService.updatePurchase(data, this.purchaseId).subscribe(result => {
+      if(result.status === 'OK'){
+        this.navCtrl.navigateBack('/main');
+      }
+    });
   }
 
   compareFn(e1: PrettyUser, e2: PrettyUser){
