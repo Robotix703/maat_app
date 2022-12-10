@@ -1,0 +1,27 @@
+workflows:
+  ionic-capacitor-android-workflow:
+    name: Ionic Capacitor Android Workflow
+    max_build_duration: 120
+    environment:
+      node: latest
+    triggering:
+      events:
+        - push
+        - pull_request
+    scripts:
+      - name: Install npm dependencies for Ionic project
+        script: |
+          npm install
+          ionic build
+          npx cap add android
+          npx capacitor-assets generate --iconBackgroundColor '#000000' --splashBackgroundColor '#000000'
+          npx cap sync
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Build Android release
+        script: |
+          cd android
+          ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.apk
