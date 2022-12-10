@@ -84,16 +84,6 @@ export class AuthService implements OnDestroy {
 
   constructor(private http: HttpClient) {}
 
-  signup(name: string, password: string, invitationCode: string, userNumber: number): Observable<AuthResponseData> {
-    return this.http.post<any>(URL_BACKEND + '/signup', {
-      name: name,
-      password: password,
-      invitationCode: invitationCode,
-      userNumber: userNumber
-    })
-    .pipe(tap(this.setUserData.bind(this)));
-  }
-
   login(name: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(URL_BACKEND + '/login', {
       name: name,

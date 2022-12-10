@@ -13,31 +13,23 @@ import { AuthResponseData, AuthService } from './auth.service';
 })
 export class AuthPage implements OnInit {
   isLoading = false;
-  isLogin = true;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  authenticate(name: string, password: string, invitationCode: undefined | string, userNumber: undefined | number) {
+  authenticate(name: string, password: string) {
     this.isLoading = true;
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(loadingEl => {
         loadingEl.present();
-        let authObs: Observable<AuthResponseData>;
-        if (this.isLogin) {
-          authObs = this.authService.login(name, password);
-        } else {
-          if(invitationCode && userNumber){
-            authObs = this.authService.signup(name, password, invitationCode, userNumber);
-          }
-        }
+        const authObs: Observable<AuthResponseData> = this.authService.login(name, password);
         authObs.subscribe(
           resData => {
             this.isLoading = false;
@@ -47,15 +39,11 @@ export class AuthPage implements OnInit {
           errRes => {
             loadingEl.dismiss();
             const code = errRes.error.message;
-            const message = code?? 'Could not sign you up, please try again.';
+            const message = code ?? 'Could not sign you up, please try again.';
             this.showAlert(message);
           }
         );
       });
-  }
-
-  onSwitchAuthMode() {
-    this.isLogin = !this.isLogin;
   }
 
   onSubmit(form: NgForm) {
@@ -64,10 +52,8 @@ export class AuthPage implements OnInit {
     }
     const name: string = form.value.name;
     const password: string = form.value.password;
-    const invitationCode: undefined | string = form.value.invitationCode;
-    const userNumber: undefined | string = form.value.userNumber;
 
-    this.authenticate(name, password, invitationCode, parseInt(userNumber, 10));
+    this.authenticate(name, password);
     form.reset();
   }
 
