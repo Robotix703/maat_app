@@ -40,22 +40,14 @@ export class AuthPage implements OnInit {
         }
         authObs.subscribe(
           resData => {
-            console.log(resData);
             this.isLoading = false;
             loadingEl.dismiss();
             this.router.navigateByUrl('/main');
           },
           errRes => {
             loadingEl.dismiss();
-            const code = errRes.error.error.message;
-            let message = 'Could not sign you up, please try again.';
-            if (code === 'EMAIL_EXISTS') {
-              message = 'This email address exists already!';
-            } else if (code === 'EMAIL_NOT_FOUND') {
-              message = 'E-Mail address could not be found.';
-            } else if (code === 'INVALID_PASSWORD') {
-              message = 'This password is not correct.';
-            }
+            const code = errRes.error.message;
+            const message = code?? 'Could not sign you up, please try again.';
             this.showAlert(message);
           }
         );

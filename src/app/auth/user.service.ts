@@ -18,7 +18,6 @@ export class UserService {
 
   init(): void {
     this.usersSub = this.getUsers().subscribe(users => {
-      console.log(users);
       this.users = users;
     });
   }

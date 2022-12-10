@@ -22,7 +22,7 @@ export class PurchaseService {
     return this.http.delete<DeleteResponse>(URL_BACKEND + '/' + purchaseId);
   }
 
-  createPurchase(data: FormPurchase): Observable<CreateResponse> {
+  createPurchase(data: FormPurchase): Observable<CreateResponse>{
     return this.http.post<CreateResponse>(URL_BACKEND + '/add', data);
   }
 

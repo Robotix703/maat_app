@@ -14,7 +14,7 @@ import { ListService } from '../list/list.service';
 })
 export class MainPage implements OnInit, OnDestroy {
 
-  loadedLists: DisplayableList[];
+  loadedLists: DisplayableList[] = [];
   listsSub: Subscription;
   isLoading: boolean;
   userNumber: number;

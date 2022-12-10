@@ -69,9 +69,7 @@ export class ViewPage implements OnInit {
   }
 
   updatePurchase(){
-    if (!this.form.valid) {
-      return;
-    }
+    if (!this.form.valid) {return;}
 
     const data: UpdateFormPurchase = {
       title: this.form.value.title,

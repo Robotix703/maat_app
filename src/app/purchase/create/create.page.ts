@@ -48,9 +48,7 @@ export class CreatePage implements OnInit {
   }
 
   createPurchase(){
-    if (!this.form.valid) {
-      return;
-    }
+    if (!this.form.valid) { return; }
 
     const purchaseData: FormPurchase = {
       title: this.form.value.title,

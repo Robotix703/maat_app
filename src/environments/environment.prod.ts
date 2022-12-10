@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL: 'https://overcookedNode.robotix703.fr/api/'
+  apiURL: 'https://maatNode.robotix703.fr/api/'
 };

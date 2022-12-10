@@ -19,19 +19,23 @@ const routes: Routes = [
   },
   {
     path: 'list/create',
-    loadChildren: () => import('./list/create/create.module').then( m => m.CreatePageModule)
+    loadChildren: () => import('./list/create/create.module').then( m => m.CreatePageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'list/view/:listId',
-    loadChildren: () => import('./list/view/view.module').then( m => m.ViewPageModule)
+    loadChildren: () => import('./list/view/view.module').then( m => m.ViewPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'purchase/create/:listId',
-    loadChildren: () => import('./purchase/create/create.module').then( m => m.CreatePageModule)
+    loadChildren: () => import('./purchase/create/create.module').then( m => m.CreatePageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'purchase/view/:purchaseId',
-    loadChildren: () => import('./purchase/view/view.module').then( m => m.ViewPageModule)
+    loadChildren: () => import('./purchase/view/view.module').then( m => m.ViewPageModule),
+    canLoad: [AuthGuard]
   }
 ];
 

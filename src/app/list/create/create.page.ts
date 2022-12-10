@@ -21,9 +21,7 @@ export class CreatePage implements OnInit {
   }
 
   createList(){
-    if (!this.form.valid) {
-      return;
-    }
+    if (!this.form.valid) { return; }
 
     const listData: FormCreateList = {
       listName: this.form.value.name,
