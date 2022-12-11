@@ -29,10 +29,10 @@ jobs:
     - run: ionic build
     - run: npx cap add @capacitor-community/electron
     - run: npx cap sync
-    - run: cp electron-builder.config.json ./electron
-    - run: cd electron && npm run electron:pack
+    - run: cp electron-builder/package.json ./electron
+    - run: cd electron && npm run package
     - run: ls electron/dist
-    - run: tar -czvf electron.tar.gz electron
+    - run: tar -czvf electron.tar.gz electron/dist
     - uses: actions/upload-artifact@v2
       with:
         name: electronPackage
