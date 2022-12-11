@@ -28,4 +28,7 @@ jobs:
     - run: ionic build
     - run: npx cap add @capacitor-community/electron
     - run: npx cap sync
-    - run: ls electron
+    - uses: actions/upload-artifact@v2
+      with:
+        name: electronPackage
+        path: ./electron
