@@ -24,12 +24,9 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm i @capacitor-community/electron
+    - run: npm install -g electron-builder
     - run: npm install -g @ionic/cli
     - run: ionic build
     - run: npx cap add @capacitor-community/electron
     - run: npx cap sync
-    - run: tar -czvf electron.tar.gz electron
-    - uses: actions/upload-artifact@v2
-      with:
-        name: electronPackage
-        path: ./electron.tar.gz
+    - run: electron-builder --linux deb --armv7l
