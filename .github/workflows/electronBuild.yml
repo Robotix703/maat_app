@@ -29,7 +29,7 @@ jobs:
     - run: ionic build
     - run: npx cap add @capacitor-community/electron
     - run: npx cap sync
-    - run: cp electron-builder/electron-builder.yml ./electron
+    - run: cp electron-builder/* ./electron
     - run: cd electron && npm run package
     - run: ls electron/dist
     - run: tar -czvf electron.tar.gz electron/dist
