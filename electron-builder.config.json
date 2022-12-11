@@ -1,0 +1,25 @@
+{
+  "appId": "fr.robotix703.maat",
+  "directories": {
+    "buildResources": "resources"
+  },
+  "files": [
+    "assets/**/*",
+    "build/**/*",
+    "capacitor.config.*",
+    "app/**/*"
+  ],
+  "publish": {
+    "provider": "github"
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "tar.gz",
+        "arch": [
+          "armv7l"
+        ]
+      }
+    ]
+  }
+}
