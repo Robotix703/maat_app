@@ -33,5 +33,6 @@
   "keywords": [
     "capacitor",
     "electron"
-  ]
+  ],
+  "postinstall": "electron-builder install-app-deps"
 }
