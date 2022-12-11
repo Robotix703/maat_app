@@ -12,7 +12,7 @@ workflows:
       - name: Install npm dependencies for Ionic project
         script: |
           npm install
-          ionic build
+          ionic build --prod
           npx cap add android
           npx capacitor-assets generate --iconBackgroundColor '#000000' --splashBackgroundColor '#000000'
           npx cap sync
