@@ -28,7 +28,8 @@ jobs:
     - run: ionic build
     - run: npx cap add @capacitor-community/electron
     - run: npx cap sync
+    - run: tar -czvf electron.tar.gz electron
     - uses: actions/upload-artifact@v2
       with:
         name: electronPackage
-        path: ./electron
+        path: ./electron.tar.gz
