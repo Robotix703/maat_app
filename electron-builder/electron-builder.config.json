@@ -9,13 +9,10 @@
     "capacitor.config.*",
     "app/**/*"
   ],
-  "publish": {
-    "provider": "github"
-  },
   "linux": {
     "target": [
       {
-        "target": "AppImage",
+        "target": "tar.gz",
         "arch": [
           "armv7l"
         ]
