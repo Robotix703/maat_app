@@ -32,7 +32,7 @@ jobs:
     - run: cp electron-builder/* ./electron
     - run: cd electron && npm run package
     - run: ls electron/dist
-    - run: tar -czvf electron.tar.gz electron/dist
+    - run: tar -czvf electron.tar.gz electron
     - uses: actions/upload-artifact@v2
       with:
         name: electronPackage
