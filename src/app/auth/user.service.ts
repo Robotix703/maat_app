@@ -23,16 +23,15 @@ export class UserService {
   }
 
   getPrettyUsers(): PrettyUser[]{
-    if(this.usersSub){
+    if(this.users){
       return this.users;
     }
     else{
       this.init();
-      this.getPrettyUsers();
     }
   }
 
-  private getUsers(): Observable<PrettyUser[]>{
+  getUsers(): Observable<PrettyUser[]>{
     return this.http.get<PrettyUser[]>(URL_BACKEND + '/all', {});
   }
 }

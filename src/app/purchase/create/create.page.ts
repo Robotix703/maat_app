@@ -39,7 +39,9 @@ export class CreatePage implements OnInit {
         return;
       }
       this.listId = paramMap.get('listId');
-      this.users = this.userService.getPrettyUsers();
+      this.userService.getUsers().subscribe(users => {
+        this.users = users;
+      });
       this.authService.userId.subscribe(userId => {
         this.userId = userId;
       });
