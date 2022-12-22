@@ -60,7 +60,7 @@ export class ViewPage implements OnInit, OnDestroy {
 
   deletePurchase(purchaseId: string, slidingEl: IonItemSliding){
     this.purchaseService.deletePurchase(purchaseId).subscribe(response => {
-      this.purchaseSub = this.purchaseService.getPurchases(purchaseId).subscribe(data => {
+      this.purchaseSub = this.purchaseService.getPurchases(this.listId).subscribe(data => {
         this.display(data);
       });
       slidingEl.close();

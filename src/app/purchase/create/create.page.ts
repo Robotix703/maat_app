@@ -56,7 +56,7 @@ export class CreatePage implements OnInit {
       title: this.form.value.title,
       amount: this.form.value.amount,
       buyTo: this.form.value.buyTo as UserId[],
-      from: this.userId as UserId,
+      from: this.form.value.from ? this.form.value.from : this.userId as UserId,
       listId: this.listId
     };
 
