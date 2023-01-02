@@ -31,7 +31,7 @@ export class AuthPage implements OnInit {
         loadingEl.present();
         this.authService.login(userName, apiKey)
           .subscribe((userData: PrettyUser) => {
-            this.authService.saveAPIKey(userName, userData.userNumber, apiKey)
+            this.authService.saveAPIKey(userName, userData.userId, userData.userNumber, apiKey)
               .then((result: any) => {
                 this.isLoading = false;
                 loadingEl.dismiss();

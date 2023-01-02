@@ -29,12 +29,17 @@ export class AuthService {
   private _apiKey!: string;
   private _userNumber!: number;
   private _userName!: string;
+  private _userId!: string;
   private _userIsAuthenticated = false;
 
   constructor(private http: HttpClient) {}
 
   get apiKey(){
     return this._apiKey;
+  }
+
+  get userId(){
+    return this._userId;
   }
 
   get userName(){
@@ -49,12 +54,14 @@ export class AuthService {
     return this._userIsAuthenticated;
   }
 
-  public saveAPIKey(username: string, userNumber: number, apiKey: string): Promise<void>{
+  public saveAPIKey(username: string, userId: string, userNumber: number, apiKey: string): Promise<void>{
     const data = JSON.stringify({
       username: username,
+      userId: userId,
       userNumber: userNumber,
       apiKey: apiKey
     });
+    this._userId = userId;
     this._userName = username;
     this._userNumber = userNumber;
     this._apiKey = apiKey;
@@ -74,10 +81,12 @@ export class AuthService {
         }
         const parsedData = JSON.parse(storedData.value) as {
           username: string;
+          userId: string;
           userNumber: number;
           apiKey: string;
         };
         this._apiKey = parsedData.apiKey;
+        this._userId =parsedData.userId;
         this._userNumber = parsedData.userNumber;
         this._userName = parsedData.username;
         return true;
