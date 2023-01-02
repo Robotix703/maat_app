@@ -37,12 +37,10 @@ export class MainPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authService.userNumber.subscribe(userNumber => {
-      this.userNumber = userNumber;
+    this.userNumber = this.authService.userNumber;
 
-      this.listsSub = this.listService.getLists().subscribe(lists => {
-        this.display(lists);
-      });
+    this.listsSub = this.listService.getLists().subscribe(lists => {
+      this.display(lists);
     });
   }
 
