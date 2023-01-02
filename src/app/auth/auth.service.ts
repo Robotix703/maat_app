@@ -3,14 +3,16 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable no-underscore-dangle */
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 
-import { User } from './user.model';
+import { PrettyUser } from './user.model';
 import { environment } from '../../environments/environment';
+
+const URL_BACKEND = environment.apiURL + 'user';
 
 export interface AuthResponseData {
   token: string;
@@ -20,177 +22,66 @@ export interface AuthResponseData {
   name: string;
 }
 
-const URL_BACKEND = environment.apiURL + 'user';
-
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnDestroy {
-  private _user = new BehaviorSubject<User>(null);
-  private activeLogoutTimer: any;
-  private validToken: string;
-
-  get userIsAuthenticated(): Observable<boolean> {
-    return this._user.asObservable().pipe(
-      map(user => {
-        if (user) {
-          return !!user.token;
-        } else {
-          return false;
-        }
-      })
-    );
-  }
-
-  get userId() {
-    return this._user.asObservable().pipe(
-      map(user => {
-        if (user) {
-          return user.id;
-        } else {
-          return null;
-        }
-      })
-    );
-  }
-
-  get userNumber() {
-    return this._user.asObservable().pipe(
-      map(user => {
-        if (user) {
-          return user.number;
-        } else {
-          return null;
-        }
-      })
-    );
-  }
-
-  get token() {
-    return this._user.asObservable().pipe(
-      map(user => {
-        if (user) {
-          return user.token;
-        } else {
-          return null;
-        }
-      })
-    );
-  }
-
-  getValidToken(){
-    return this.validToken;
-  }
+export class AuthService {
+  private _apiKey!: string;
+  private _userNumber!: number;
+  private _userName!: string;
+  private _userIsAuthenticated = false;
 
   constructor(private http: HttpClient) {}
 
-  login(name: string, password: string): Observable<AuthResponseData> {
-    return this.http.post<AuthResponseData>(URL_BACKEND + '/login', {
-      name: name,
-      password: password
-    })
-    .pipe(tap(this.setUserData.bind(this)));
+  get apiKey(){
+    return this._apiKey;
   }
 
-  logout() {
-    if (this.activeLogoutTimer) {
-      clearTimeout(this.activeLogoutTimer);
-    }
-    this._user.next(null);
-    Preferences.remove({ key: 'authData' });
+  get userName(){
+    return this._userName;
   }
 
-  ngOnDestroy() {
-    if (this.activeLogoutTimer) {
-      clearTimeout(this.activeLogoutTimer);
-    }
+  get userNumber(){
+    return this._userNumber;
   }
 
-  autoLogin() {
+  get userIsAuthenticated(){
+    return this._userIsAuthenticated;
+  }
+
+  public saveAPIKey(username: string, userNumber: number, apiKey: string): Promise<void>{
+    const data = JSON.stringify({
+      username: username,
+      userNumber: userNumber,
+      apiKey: apiKey
+    });
+    this._userName = username;
+    this._userNumber = userNumber;
+    this._apiKey = apiKey;
+    this._userIsAuthenticated = true;
+    return Preferences.set({ key: 'authData', value: data });
+  }
+
+  public login(username: string, apiKey: string): Observable<PrettyUser>{
+    return this.http.post<PrettyUser>(URL_BACKEND + '/login', {userName: username, apiKey: apiKey});
+  }
+
+  getAPIKey(): Observable<boolean>{
     return from(Preferences.get({ key: 'authData' })).pipe(
       map(storedData => {
         if (!storedData || !storedData.value) {
-          return null;
+          return false;
         }
         const parsedData = JSON.parse(storedData.value) as {
-          token: string;
-          tokenExpirationDate: string;
-          userId: string;
-          name: string;
-          number: number;
+          username: string;
+          userNumber: number;
+          apiKey: string;
         };
-        const expirationTime = new Date(parsedData.tokenExpirationDate);
-        if (expirationTime <= new Date()) {
-          return null;
-        }
-        const user = new User(
-          parsedData.userId,
-          parsedData.name,
-          parsedData.number,
-          parsedData.token,
-          expirationTime
-        );
-        this.validToken = parsedData.token;
-        return user;
-      }),
-      tap(user => {
-        if (user) {
-          this._user.next(user);
-          this.autoLogout(user.tokenDuration);
-        }
-      }),
-      map(user => {
-        return !!user;
+        this._apiKey = parsedData.apiKey;
+        this._userNumber = parsedData.userNumber;
+        this._userName = parsedData.username;
+        return true;
       })
     );
-  }
-
-  private autoLogout(duration: number) {
-    if (this.activeLogoutTimer) {
-      clearTimeout(this.activeLogoutTimer);
-    }
-    this.activeLogoutTimer = setTimeout(() => {
-      this.logout();
-    }, duration);
-  }
-
-  private setUserData(userData: AuthResponseData) {
-    const expirationTime = new Date(
-      new Date().getTime() + +userData.expiresIn * 1000
-    );
-    const user = new User(
-      userData.userId,
-      userData.name,
-      userData.number,
-      userData.token,
-      expirationTime
-    );
-    this._user.next(user);
-    this.autoLogout(user.tokenDuration);
-    this.storeAuthData(
-      userData.userId,
-      userData.token,
-      expirationTime.toISOString(),
-      userData.name,
-      userData.number
-    );
-    this.validToken = userData.token;
-  }
-
-  private storeAuthData(
-    userId: string,
-    token: string,
-    tokenExpirationDate: string,
-    name: string,
-    number: number
-  ) {
-    const data = JSON.stringify({
-      userId: userId,
-      token: token,
-      tokenExpirationDate: tokenExpirationDate,
-      name: name,
-      number: number
-    });
-    Preferences.set({ key: 'authData', value: data });
   }
 }

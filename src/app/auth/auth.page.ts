@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { AuthResponseData, AuthService } from './auth.service';
+import { AuthService } from './auth.service';
+import { PrettyUser } from './user.model';
 
 @Component({
   selector: 'app-auth',
@@ -23,26 +23,41 @@ export class AuthPage implements OnInit {
 
   ngOnInit() { }
 
-  authenticate(name: string, password: string) {
+  authenticate(userName: string, apiKey: string) {
     this.isLoading = true;
     this.loadingCtrl
-      .create({ keyboardClose: true, message: 'Logging in...' })
+      .create({ keyboardClose: true, message: 'Test...' })
       .then(loadingEl => {
         loadingEl.present();
-        const authObs: Observable<AuthResponseData> = this.authService.login(name, password);
-        authObs.subscribe(
-          resData => {
-            this.isLoading = false;
-            loadingEl.dismiss();
-            this.router.navigateByUrl('/main');
+        this.authService.login(userName, apiKey)
+          .subscribe((userData: PrettyUser) => {
+            this.authService.saveAPIKey(userName, userData.userNumber, apiKey)
+              .then((result: any) => {
+                this.isLoading = false;
+                loadingEl.dismiss();
+                this.router.navigateByUrl('/main');
+              })
+              .catch((error: any) => {
+                console.error(error);
+                this.alertCtrl
+                  .create({
+                    header: 'Authentication failed',
+                    message: error,
+                    buttons: ['Okay']
+                  })
+                  .then(alertEl => alertEl.present());
+              });
           },
-          errRes => {
-            loadingEl.dismiss();
-            const code = errRes.error.message;
-            const message = code ?? 'Could not sign you up, please try again.';
-            this.showAlert(message);
-          }
-        );
+            (error: any) => {
+              console.error(error);
+              this.alertCtrl
+                  .create({
+                    header: 'Authentication failed',
+                    message: error,
+                    buttons: ['Okay']
+                  })
+                  .then(alertEl => alertEl.present());
+            });
       });
   }
 
@@ -50,20 +65,10 @@ export class AuthPage implements OnInit {
     if (!form.valid) {
       return;
     }
-    const name: string = form.value.name;
-    const password: string = form.value.password;
+    const userName: string = form.value.name;
+    const apiKey: string = form.value.apiKey;
 
-    this.authenticate(name, password);
+    this.authenticate(userName, apiKey);
     form.reset();
-  }
-
-  private showAlert(message: string) {
-    this.alertCtrl
-      .create({
-        header: 'Authentication failed',
-        message: message,
-        buttons: ['Okay']
-      })
-      .then(alertEl => alertEl.present());
   }
 }

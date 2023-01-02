@@ -1,7 +1,7 @@
+/* eslint-disable arrow-body-style */
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, UrlSegment, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { take, tap, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
 
@@ -15,20 +15,16 @@ export class AuthGuard implements CanLoad {
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authService.userIsAuthenticated.pipe(
-      take(1),
-      switchMap(isAuthenticated => {
-        if (!isAuthenticated) {
-          return this.authService.autoLogin();
-        } else {
-          return of(isAuthenticated);
-        }
-      }),
-      tap(isAuthenticated => {
-        if (!isAuthenticated) {
-          this.router.navigateByUrl('/auth');
-        }
-      })
-    );
+    if(this.authService.userIsAuthenticated){
+      return true;
+    } else {
+      this.authService.getAPIKey()
+      .subscribe((result: boolean) => {
+        return result;
+      },
+      (error: any) => {
+        return this.router.navigateByUrl('/auth');
+      });
+    }
   }
 }
