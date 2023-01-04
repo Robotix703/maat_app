@@ -35,7 +35,7 @@
               <ion-select placeholder="De" style="width: 100%;" [multiple]="false"
               ngModel
               name="from"
-              ><ion-select-option *ngFor="let user of users" value={{user.id}}>{{user.name}}</ion-select-option>
+              ><ion-select-option *ngFor="let user of users" value={{user.userId}}>{{user.userName}}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>
@@ -51,7 +51,7 @@
               ngModel
               name="buyTo"
               required
-              ><ion-select-option *ngFor="let user of users" value={{user.id}}>{{user.name}}</ion-select-option>
+              ><ion-select-option *ngFor="let user of users" value={{user.userId}}>{{user.userName}}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>

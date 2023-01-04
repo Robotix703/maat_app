@@ -55,7 +55,7 @@
               name="from"
               formControlName="from"
               required
-              ><ion-select-option *ngFor="let user of users" value={{user.name}}>{{user.name}}</ion-select-option>
+              ><ion-select-option *ngFor="let user of users" value={{user.userName}}>{{user.userName}}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>
@@ -71,7 +71,7 @@
               name="buyTo"
               formControlName="buyTo"
               required
-              ><ion-select-option *ngFor="let user of users" value={{user.name}}>{{user.name}}</ion-select-option>
+              ><ion-select-option *ngFor="let user of users" value={{user.userName}}>{{user.userName}}</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>
