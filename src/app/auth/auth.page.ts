@@ -49,14 +49,15 @@ export class AuthPage implements OnInit {
               });
           },
             (error: any) => {
+              loadingEl.dismiss();
               console.error(error);
               this.alertCtrl
-                  .create({
-                    header: 'Authentication failed',
-                    message: error,
-                    buttons: ['Okay']
-                  })
-                  .then(alertEl => alertEl.present());
+                .create({
+                  header: 'Authentication failed',
+                  message: error.error.message,
+                  buttons: ['Okay']
+                })
+                .then(alertEl => alertEl.present());
             });
       });
   }

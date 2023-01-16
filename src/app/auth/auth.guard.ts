@@ -20,6 +20,10 @@ export class AuthGuard implements CanLoad {
     } else {
       this.authService.getAPIKey()
       .subscribe((result: boolean) => {
+        console.log(result);
+        if(!result){
+          this.router.navigateByUrl('/auth');
+        }
         return result;
       },
       (error: any) => {

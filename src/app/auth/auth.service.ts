@@ -85,11 +85,14 @@ export class AuthService {
           userNumber: number;
           apiKey: string;
         };
-        this._apiKey = parsedData.apiKey;
-        this._userId =parsedData.userId;
-        this._userNumber = parsedData.userNumber;
-        this._userName = parsedData.username;
-        return true;
+        if(parsedData.apiKey && parsedData.userId && parsedData.userNumber && parsedData.username){
+          this._apiKey = parsedData.apiKey;
+          this._userId = parsedData.userId;
+          this._userNumber = parsedData.userNumber;
+          this._userName = parsedData.username;
+          return true;
+        }
+        return false;
       })
     );
   }
