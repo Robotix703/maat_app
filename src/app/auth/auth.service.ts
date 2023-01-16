@@ -85,7 +85,7 @@ export class AuthService {
           userNumber: number;
           apiKey: string;
         };
-        if(parsedData.apiKey && parsedData.userId && parsedData.userNumber && parsedData.username){
+        if(parsedData.apiKey && parsedData.userId && parsedData.username){
           this._apiKey = parsedData.apiKey;
           this._userId = parsedData.userId;
           this._userNumber = parsedData.userNumber;
